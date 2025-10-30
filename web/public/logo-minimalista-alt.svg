@@ -1,0 +1,13 @@
+<!-- SVG minimalista aleatório: quadrado rotacionado (losango) e linha curva, usando degradê do sistema -->
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="main-gradient" x1="0" y1="0" x2="96" y2="96" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00d1b2"/>
+      <stop offset="1" stop-color="#3273dc"/>
+    </linearGradient>
+  </defs>
+  <!-- Quadrado rotacionado (losango) -->
+  <rect x="28" y="28" width="40" height="40" rx="8" transform="rotate(45 48 48)" stroke="url(#main-gradient)" stroke-width="6" fill="none"/>
+  <!-- Linha curva minimalista -->
+  <path d="M24 72 Q48 24 72 72" stroke="url(#main-gradient)" stroke-width="5" fill="none" stroke-linecap="round"/>
+</svg>

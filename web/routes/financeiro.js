@@ -14,19 +14,21 @@ router.get('/financeiro', checkAdmin, async (req, res) => {
     });
     const registros = response.data;
     let html = `<!DOCTYPE html><html><head><meta charset='utf-8'><title>Financeiro</title><link rel='stylesheet' href='/login.css'></head><body><section class='section'><div class='container'>`;
-    html += `<nav class='navbar' role='navigation' aria-label='main navigation'><div class='navbar-menu'><div class='navbar-start'>`;
-    html += `<a class='navbar-item' href='/admin'>Início</a>`;
-    html += `<a class='navbar-item' href='/clientes'>Clientes</a>`;
-    html += `<a class='navbar-item' href='/produtos'>Produtos</a>`;
-    html += `<a class='navbar-item is-active' href='/financeiro'>Financeiro</a>`;
-    html += `<a class='navbar-item' href='/servicos'>Serviços</a>`;
-    html += `</div><div class='navbar-end'><a class='navbar-item' href='/logout'>Sair</a></div></div></nav>`;
+  const nomeUsuario = req.session.user?.nome || 'Usuário';
+  html += `<nav class='navbar' role='navigation' aria-label='main navigation'><div class='navbar-menu'><div class='navbar-start'>`;
+  html += `<a class='navbar-item' href='/clientes'>Clientes</a>`;
+  html += `<a class='navbar-item' href='/produtos'>Produtos</a>`;
+  html += `<a class='navbar-item is-active' href='/financeiro'>Financeiro</a>`;
+  html += `<a class='navbar-item' href='/servicos'>Serviços</a>`;
+  html += `</div><div class='navbar-end' style='display:flex;align-items:center;gap:0.5rem;'>`;
+  html += `<span style='font-weight:600;font-size:1.1rem;margin-right:0.5rem;'>Bem-vindo, ${nomeUsuario}</span>`;
+  html += `<a class='navbar-item' href='/logout' style='display:flex;align-items:center;gap:0.3rem;'><svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' viewBox='0 0 24 24' stroke='currentColor' style='vertical-align:middle;'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1'/></svg> Sair</a></div></div></nav>`;
     html += `<h1 class='title'>Financeiro</h1><a class='button is-primary' href='/financeiro/novo'>Novo Registro</a><table class='table is-fullwidth'><thead><tr><th>Descrição</th><th>Valor</th><th>Data</th><th>Ações</th></tr></thead><tbody>`;
     if (registros.length === 0) {
       html += `<tr><td colspan='4' style='text-align:center;color:#888;'>Nenhum registro financeiro</td></tr>`;
     } else {
       registros.forEach(r => {
-        html += `<tr><td>${r.descricao}</td><td>${r.valor}</td><td>${r.data}</td><td><a class='button is-small' href='/financeiro/editar/${r.id}'>Editar</a> <form method='POST' action='/financeiro/deletar/${r.id}' style='display:inline'><button class='button is-danger is-small' type='submit'>Excluir</button></form></td></tr>`;
+    html += `<tr><td>${r.descricao}</td><td>R$ ${Number(r.valor).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2})}</td><td>${r.data}</td><td><a class='button is-small' href='/financeiro/editar/${r.id}'>Editar</a> <form method='POST' action='/financeiro/deletar/${r.id}' style='display:inline'><button class='button is-danger is-small' type='submit'>Excluir</button></form></td></tr>`;
       });
     }
     html += `</tbody></table></div></section></body></html>`;
@@ -41,7 +43,7 @@ router.get('/financeiro', checkAdmin, async (req, res) => {
 });
 
 router.get('/financeiro/novo', checkAdmin, (req, res) => {
-  let html = `<!DOCTYPE html><html><head><meta charset='utf-8'><title>Novo Registro Financeiro</title><link rel='stylesheet' href='/login.css'></head><body><section class='section'><div class='container'><h1 class='title'>Novo Registro Financeiro</h1><form method='POST' action='/financeiro/novo'><div class='field'><label class='label'>Descrição</label><div class='control'><input class='input' type='text' name='descricao' required></div></div><div class='field'><label class='label'>Valor</label><div class='control'><input class='input' type='number' name='valor' required></div></div><div class='field'><label class='label'>Data</label><div class='control'><input class='input' type='date' name='data' required></div></div><div class='field'><button class='button is-primary' type='submit'>Salvar</button></div></form><a href='/financeiro'>Voltar</a></div></section></body></html>`;
+  let html = `<!DOCTYPE html><html><head><meta charset='utf-8'><title>Novo Registro Financeiro</title><link rel='stylesheet' href='/login.css'></head><body><section class='section'><div class='container'><h1 class='title'>Novo Registro Financeiro</h1><form method='POST' action='/financeiro/novo'><div class='field'><label class='label'>Descrição</label><div class='control'><input class='input' type='text' name='descricao' required></div></div><div class='field'><label class='label'>Valor (R$)</label><div class='control'><input class='input' type='number' name='valor' step='0.01' min='0' required placeholder='0,00' inputmode='decimal'></div></div><div class='field'><label class='label'>Data</label><div class='control'><input class='input' type='date' name='data' required></div></div><div class='field'><button class='button is-primary' type='submit'>Salvar</button></div></form><a href='/financeiro'>Voltar</a></div></section></body></html>`;
   res.send(html);
 });
 
@@ -66,7 +68,7 @@ router.get('/financeiro/editar/:id', checkAdmin, async (req, res) => {
       headers: { Authorization: `Bearer ${req.session.token}` }
     });
     const registro = response.data;
-    let html = `<!DOCTYPE html><html><head><meta charset='utf-8'><title>Editar Registro Financeiro</title><link rel='stylesheet' href='/login.css'></head><body><section class='section'><div class='container'><h1 class='title'>Editar Registro Financeiro</h1><form method='POST' action='/financeiro/editar/${registro.id}'><div class='field'><label class='label'>Descrição</label><div class='control'><input class='input' type='text' name='descricao' value='${registro.descricao}' required></div></div><div class='field'><label class='label'>Valor</label><div class='control'><input class='input' type='number' name='valor' value='${registro.valor}' required></div></div><div class='field'><label class='label'>Data</label><div class='control'><input class='input' type='date' name='data' value='${registro.data}' required></div></div><div class='field'><button class='button is-primary' type='submit'>Salvar</button></div></form><a href='/financeiro'>Voltar</a></div></section></body></html>`;
+  let html = `<!DOCTYPE html><html><head><meta charset='utf-8'><title>Editar Registro Financeiro</title><link rel='stylesheet' href='/login.css'></head><body><section class='section'><div class='container'><h1 class='title'>Editar Registro Financeiro</h1><form method='POST' action='/financeiro/editar/${registro.id}'><div class='field'><label class='label'>Descrição</label><div class='control'><input class='input' type='text' name='descricao' value='${registro.descricao}' required></div></div><div class='field'><label class='label'>Valor (R$)</label><div class='control'><input class='input' type='number' name='valor' value='${registro.valor}' step='0.01' min='0' required placeholder='0,00' inputmode='decimal'></div></div><div class='field'><label class='label'>Data</label><div class='control'><input class='input' type='date' name='data' value='${registro.data}' required></div></div><div class='field'><button class='button is-primary' type='submit'>Salvar</button></div></form><a href='/financeiro'>Voltar</a></div></section></body></html>`;
     res.send(html);
   } catch (err) {
     let msg = 'Erro ao carregar registro financeiro';

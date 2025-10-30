@@ -15,14 +15,16 @@ router.get('/clientes', checkAuth, async (req, res) => {
     });
     const clientes = response.data;
     let html = `<!DOCTYPE html><html><head><meta charset='utf-8'><title>Clientes</title><link rel='stylesheet' href='/login.css'></head><body><section class='section'><div class='container'>`;
+    const nomeUsuario = req.session.user?.nome || 'Usuário';
     html += `<nav class='navbar' role='navigation' aria-label='main navigation'><div class='navbar-menu'><div class='navbar-start'>`;
-    html += `<a class='navbar-item' href='/${req.session.user.role}'>Início</a>`;
     html += `<a class='navbar-item is-active' href='/clientes'>Clientes</a>`;
     if (req.session.user.role === 'admin') {
       html += `<a class='navbar-item' href='/produtos'>Produtos</a><a class='navbar-item' href='/financeiro'>Financeiro</a>`;
     }
     html += `<a class='navbar-item' href='/servicos'>Serviços</a>`;
-    html += `</div><div class='navbar-end'><a class='navbar-item' href='/logout'>Sair</a></div></div></nav>`;
+  html += `</div><div class='navbar-end' style='display:flex;align-items:center;gap:0.5rem;'>`;
+  html += `<span style='font-weight:600;font-size:1.1rem;margin-right:0.5rem;'>Bem-vindo, ${nomeUsuario}</span>`;
+  html += `<a class='navbar-item' href='/logout' style='display:flex;align-items:center;gap:0.3rem;'><svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' viewBox='0 0 24 24' stroke='currentColor' style='vertical-align:middle;'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1'/></svg> Sair</a></div></div></nav>`;
     html += `<h1 class='title'>Clientes</h1><a class='button is-primary' href='/clientes/novo'>Novo Cliente</a><table class='table is-fullwidth'><thead><tr><th>Nome</th><th>Email</th><th>Ações</th></tr></thead><tbody>`;
     if (clientes.length === 0) {
       html += `<tr><td colspan='3' style='text-align:center;color:#888;'>Nenhum cliente cadastrado</td></tr>`;
