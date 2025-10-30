@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Bike Store</title>
+  <link rel="stylesheet" href="/login.css">
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <div class="login-container box">
+        <h1 class="title has-text-centered">Login</h1>
+        <form method="POST" action="/login">
+          <div class="field">
+            <label class="label">Usuário</label>
+            <div class="control">
+              <input class="input" type="text" name="username" required autofocus>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Senha</label>
+            <div class="control">
+              <input class="input" type="password" name="password" required>
+            </div>
+          </div>
+          <div class="field">
+            <button class="button is-primary is-fullwidth" type="submit">Entrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

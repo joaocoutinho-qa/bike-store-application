@@ -1,4 +1,4 @@
-// Banco de dados em memória
+// Banco de dados 
 module.exports = {
   users: [],
   clientes: [],

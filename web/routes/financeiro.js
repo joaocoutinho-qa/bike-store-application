@@ -1,0 +1,110 @@
+const express = require('express');
+const axios = require('axios');
+const router = express.Router();
+
+function checkAdmin(req, res, next) {
+  if (!req.session.user || req.session.user.role !== 'admin') return res.redirect('/login');
+  next();
+}
+
+router.get('/financeiro', checkAdmin, async (req, res) => {
+  try {
+    const response = await axios.get('http://localhost:3000/api/financeiro', {
+      headers: { Authorization: `Bearer ${req.session.token}` }
+    });
+    const registros = response.data;
+    let html = `<!DOCTYPE html><html><head><meta charset='utf-8'><title>Financeiro</title><link rel='stylesheet' href='/login.css'></head><body><section class='section'><div class='container'>`;
+    html += `<nav class='navbar' role='navigation' aria-label='main navigation'><div class='navbar-menu'><div class='navbar-start'>`;
+    html += `<a class='navbar-item' href='/admin'>Início</a>`;
+    html += `<a class='navbar-item' href='/clientes'>Clientes</a>`;
+    html += `<a class='navbar-item' href='/produtos'>Produtos</a>`;
+    html += `<a class='navbar-item is-active' href='/financeiro'>Financeiro</a>`;
+    html += `<a class='navbar-item' href='/servicos'>Serviços</a>`;
+    html += `</div><div class='navbar-end'><a class='navbar-item' href='/logout'>Sair</a></div></div></nav>`;
+    html += `<h1 class='title'>Financeiro</h1><a class='button is-primary' href='/financeiro/novo'>Novo Registro</a><table class='table is-fullwidth'><thead><tr><th>Descrição</th><th>Valor</th><th>Data</th><th>Ações</th></tr></thead><tbody>`;
+    if (registros.length === 0) {
+      html += `<tr><td colspan='4' style='text-align:center;color:#888;'>Nenhum registro financeiro</td></tr>`;
+    } else {
+      registros.forEach(r => {
+        html += `<tr><td>${r.descricao}</td><td>${r.valor}</td><td>${r.data}</td><td><a class='button is-small' href='/financeiro/editar/${r.id}'>Editar</a> <form method='POST' action='/financeiro/deletar/${r.id}' style='display:inline'><button class='button is-danger is-small' type='submit'>Excluir</button></form></td></tr>`;
+      });
+    }
+    html += `</tbody></table></div></section></body></html>`;
+    res.send(html);
+  } catch (err) {
+    let msg = 'Erro ao buscar registros financeiros';
+    if (err.response && err.response.data && err.response.data.message) {
+      msg += ': ' + err.response.data.message;
+    }
+    res.send(`<div class='error-message'>${msg}</div><a href='/admin'>Voltar</a>`);
+  }
+});
+
+router.get('/financeiro/novo', checkAdmin, (req, res) => {
+  let html = `<!DOCTYPE html><html><head><meta charset='utf-8'><title>Novo Registro Financeiro</title><link rel='stylesheet' href='/login.css'></head><body><section class='section'><div class='container'><h1 class='title'>Novo Registro Financeiro</h1><form method='POST' action='/financeiro/novo'><div class='field'><label class='label'>Descrição</label><div class='control'><input class='input' type='text' name='descricao' required></div></div><div class='field'><label class='label'>Valor</label><div class='control'><input class='input' type='number' name='valor' required></div></div><div class='field'><label class='label'>Data</label><div class='control'><input class='input' type='date' name='data' required></div></div><div class='field'><button class='button is-primary' type='submit'>Salvar</button></div></form><a href='/financeiro'>Voltar</a></div></section></body></html>`;
+  res.send(html);
+});
+
+router.post('/financeiro/novo', checkAdmin, async (req, res) => {
+  try {
+    await axios.post('http://localhost:3000/api/financeiro', req.body, {
+      headers: { Authorization: `Bearer ${req.session.token}` }
+    });
+    res.redirect('/financeiro');
+  } catch (err) {
+    let msg = 'Erro ao criar registro financeiro';
+    if (err.response && err.response.data && err.response.data.message) {
+      msg += ': ' + err.response.data.message;
+    }
+    res.send(`<div class='error-message'>${msg}</div><a href='/financeiro'>Voltar</a>`);
+  }
+});
+
+router.get('/financeiro/editar/:id', checkAdmin, async (req, res) => {
+  try {
+    const response = await axios.get(`http://localhost:3000/api/financeiro/${req.params.id}`, {
+      headers: { Authorization: `Bearer ${req.session.token}` }
+    });
+    const registro = response.data;
+    let html = `<!DOCTYPE html><html><head><meta charset='utf-8'><title>Editar Registro Financeiro</title><link rel='stylesheet' href='/login.css'></head><body><section class='section'><div class='container'><h1 class='title'>Editar Registro Financeiro</h1><form method='POST' action='/financeiro/editar/${registro.id}'><div class='field'><label class='label'>Descrição</label><div class='control'><input class='input' type='text' name='descricao' value='${registro.descricao}' required></div></div><div class='field'><label class='label'>Valor</label><div class='control'><input class='input' type='number' name='valor' value='${registro.valor}' required></div></div><div class='field'><label class='label'>Data</label><div class='control'><input class='input' type='date' name='data' value='${registro.data}' required></div></div><div class='field'><button class='button is-primary' type='submit'>Salvar</button></div></form><a href='/financeiro'>Voltar</a></div></section></body></html>`;
+    res.send(html);
+  } catch (err) {
+    let msg = 'Erro ao carregar registro financeiro';
+    if (err.response && err.response.data && err.response.data.message) {
+      msg += ': ' + err.response.data.message;
+    }
+    res.send(`<div class='error-message'>${msg}</div><a href='/financeiro'>Voltar</a>`);
+  }
+});
+
+router.post('/financeiro/editar/:id', checkAdmin, async (req, res) => {
+  try {
+    await axios.put(`http://localhost:3000/api/financeiro/${req.params.id}`, req.body, {
+      headers: { Authorization: `Bearer ${req.session.token}` }
+    });
+    res.redirect('/financeiro');
+  } catch (err) {
+    let msg = 'Erro ao atualizar registro financeiro';
+    if (err.response && err.response.data && err.response.data.message) {
+      msg += ': ' + err.response.data.message;
+    }
+    res.send(`<div class='error-message'>${msg}</div><a href='/financeiro'>Voltar</a>`);
+  }
+});
+
+router.post('/financeiro/deletar/:id', checkAdmin, async (req, res) => {
+  try {
+    await axios.delete(`http://localhost:3000/api/financeiro/${req.params.id}`, {
+      headers: { Authorization: `Bearer ${req.session.token}` }
+    });
+    res.redirect('/financeiro');
+  } catch (err) {
+    let msg = 'Erro ao excluir registro financeiro';
+    if (err.response && err.response.data && err.response.data.message) {
+      msg += ': ' + err.response.data.message;
+    }
+    res.send(`<div class='error-message'>${msg}</div><a href='/financeiro'>Voltar</a>`);
+  }
+});
+
+module.exports = router;

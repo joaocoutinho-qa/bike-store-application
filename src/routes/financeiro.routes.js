@@ -4,7 +4,7 @@ const financeiroController = require('../controllers/financeiro.controller');
 const { authenticateToken, authorizeRole } = require('../middleware/auth.middleware');
 
 router.use(authenticateToken);
-router.use(authorizeRole(['gerente']));
+router.use(authorizeRole(['admin']));
 
 router.get('/', financeiroController.listarLancamentos);
 router.post('/', financeiroController.criarLancamento);

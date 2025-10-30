@@ -10,8 +10,9 @@ API REST para gestão de uma loja de bicicletas
 
 ## Autenticação
 - Login obrigatório para acesso às funcionalidades.
-- Gerente: acesso total.
-- Funcionário: acesso a todos os módulos exceto produtos e financeiro.
+- Gerente: acesso a todas as funcionalidades do sistema
+- Funcionário: acesso às funcionalidades de Gestão de Clientes e
+  Agendamento de revisões e serviços.
 - Autenticação via JWT (Bearer Token).
 
 ## Documentação
@@ -37,7 +38,7 @@ API REST para gestão de uma loja de bicicletas
    ```
 3. Acesse a documentação em [http://localhost:3000/docs](http://localhost:3000/docs)
 
-## Usuários de exemplo
+## Usuários cadastrados previamente
 - Gerente: `gerente` / `123456`
 - Funcionário: `funcionario` / `123456`
 

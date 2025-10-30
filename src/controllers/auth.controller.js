@@ -6,10 +6,14 @@ const { v4: uuidv4 } = require('uuid');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'segredo';
 
-// Usuários iniciais (apenas para exemplo)
+// Usuários da loja (gerente e funcionário)
 if (db.users.length === 0) {
-  db.users.push(new User({ id: uuidv4(), username: 'gerente', password: bcrypt.hashSync('123456', 8), role: 'gerente' }));
+  db.users.push(new User({ id: uuidv4(), username: 'admin', password: bcrypt.hashSync('123456', 8), role: 'admin' }));
   db.users.push(new User({ id: uuidv4(), username: 'funcionario', password: bcrypt.hashSync('123456', 8), role: 'funcionario' }));
+  console.log('[auth.controller] Usuários padrão criados: admin (123456), funcionario (123456)');
+  console.log('[auth.controller] Usuários atuais:', db.users);
+} else {
+  console.log('[auth.controller] Usuários já existentes no banco.');
 }
 
 exports.login = (req, res) => {
