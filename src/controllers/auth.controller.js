@@ -8,9 +8,9 @@ const JWT_SECRET = process.env.JWT_SECRET || 'segredo';
 
 // Usuários da loja (gerente e funcionário)
 if (db.users.length === 0) {
-  db.users.push(new User({ id: uuidv4(), username: 'admin', password: bcrypt.hashSync('123456', 8), role: 'admin' }));
-  db.users.push(new User({ id: uuidv4(), username: 'funcionario', password: bcrypt.hashSync('123456', 8), role: 'funcionario' }));
-  console.log('[auth.controller] Usuários padrão criados: admin (123456), funcionario (123456)');
+  db.users.push(new User({ id: uuidv4(), username: 'joao.coutinho', password: bcrypt.hashSync('123456', 8), role: 'admin', nome: 'Joao' }));
+  db.users.push(new User({ id: uuidv4(), username: 'tiago.barbosa', password: bcrypt.hashSync('123456', 8), role: 'funcionario', nome: 'Tiago' }));
+  console.log('[auth.controller] Usuários padrão criados: joao.coutinho (Joao/123456), tiago.barbosa (Tiago/123456)');
   console.log('[auth.controller] Usuários atuais:', db.users);
 } else {
   console.log('[auth.controller] Usuários já existentes no banco.');
@@ -23,5 +23,5 @@ exports.login = (req, res) => {
   const valid = bcrypt.compareSync(password, user.password);
   if (!valid) return res.status(401).json({ message: 'Senha inválida' });
   const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '8h' });
-  res.json({ token, user: { id: user.id, username: user.username, role: user.role } });
+  res.json({ token, user: { id: user.id, username: user.username, role: user.role, nome: user.nome } });
 };

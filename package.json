@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "mocha --recursive src/tests"
+  "test": "mocha --recursive tests",
+    "web": "node web/app.js",
+    "web:dev": "nodemon web/app.js"
   },
   "keywords": [
     "api",
