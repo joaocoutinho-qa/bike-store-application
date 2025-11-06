@@ -8,8 +8,9 @@ export const options = {
 }
 
 export default function () {
-  const url = 'http://localhost:3000/api/servicos';
-  const urlLogin = 'http://localhost:3000/api/auth/login';
+  const url = 'http://localhost:3000/api/servicos'
+  const urlClientes = 'http://localhost:3000/api/clientes'
+  const urlLogin = 'http://localhost:3000/api/auth/login'
 
   // Faz login e gera o token
   const payloadLogin = JSON.stringify({
@@ -34,23 +35,27 @@ export default function () {
     },
   }
 
-  // Cadastra um novo cliente
+  // Cadastra um novo cliente 
   const payloadNovoCliente = JSON.stringify({
-    nome: 'Cliente Teste',
-    email: 'cliente@email.com',
-    telefone: '123456789'
-  });
+    nome: 'Cliente para Serviço',
+    email: 'cliente@servico.com',
+    telefone: '987654321'
+  })
+  const resCadastroCliente = http.post(urlClientes, payloadNovoCliente, params)
+  const clienteId = resCadastroCliente.json().id
 
-  const resCadastro = http.post(url,payloadNovoCliente,params)
-  const clienteId = resCadastro .json().id
-
-  // Atualiza um cliente e analisa a performance
-  const payloadAtualizacao = JSON.stringify({
-  nome: 'Novo nome',
-  email: 'novo@email.com',
-  telefone: '987654321'
-})
-  const res = http.put(`http://localhost:3000/api/clientes/${clienteId}`, payloadAtualizacao, params)
+  // Cadastra um novo serviço
+  const payloadNovoServico = JSON.stringify({
+    descricao: 'Revisão simples',
+    data: '2023-11-10',
+    clientId: clienteId,
+    hora: '10:20',
+  })
+  const resCadastroServico = http.post(url,payloadNovoServico,params)
+  
+  // Lista todos os serviços e analisa a performance
+  const res = http.get(url,params)
+  console.log(res.body)
 
   check(res, {
     'status é 200': (r) => r.status === 200
@@ -60,6 +65,6 @@ export default function () {
 
 export function handleSummary(data) {
   return {
-    'atualizarServico.html': htmlReport(data),
+    'listarServicos.html': htmlReport(data),
   }
 }
