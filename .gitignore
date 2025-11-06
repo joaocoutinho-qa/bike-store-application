@@ -1,3 +1,5 @@
+# Relatórios de performance gerados pelo k6
+*.html
 # Node modules
 node_modules/
 
