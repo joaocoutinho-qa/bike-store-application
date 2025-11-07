@@ -37,8 +37,9 @@ jobs:
       - name: Instalação do k6
         run: sudo apt-get install -y k6
 
-      - name: Instalar chai v4 (compatível CommonJS)
-        run: npm install chai@4
+
+      - name: Iniciar backend
+        run: nohup npm run api-server &
 
       - name: Executar os testes de api
         run: npm run api
