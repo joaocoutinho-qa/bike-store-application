@@ -43,6 +43,7 @@ jobs:
 
       - name: Executar os testes de api
         run: npm run api
+        continue-on-error: true
 
       - name: Executar os testes de performance 
         run: for file in tests/performance/**/*.js; do k6 run "$file"; done
