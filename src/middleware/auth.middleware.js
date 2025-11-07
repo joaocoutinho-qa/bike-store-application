@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 const JWT_SECRET = process.env.JWT_SECRET || 'segredo';
 
-function authenticateToken(req, res, next) {
+export function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
   if (!token) return res.status(401).json({ message: 'Token não fornecido' });
@@ -12,7 +12,7 @@ function authenticateToken(req, res, next) {
   });
 }
 
-function authorizeRole(roles) {
+export function authorizeRole(roles) {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({ message: 'Acesso negado' });
@@ -20,5 +20,3 @@ function authorizeRole(roles) {
     next();
   };
 }
-
-module.exports = { authenticateToken, authorizeRole };

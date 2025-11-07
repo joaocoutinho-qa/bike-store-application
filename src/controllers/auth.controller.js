@@ -1,8 +1,8 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const db = require('../models/db');
-const User = require('../models/user.model');
-const { v4: uuidv4 } = require('uuid');
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
+import db from '../models/db.js'
+import User from '../models/user.model.js'
+import { v4 as uuidv4 } from 'uuid'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'segredo';
 
@@ -16,7 +16,7 @@ if (db.users.length === 0) {
   console.log('[auth.controller] Usuários já existentes no banco.');
 }
 
-exports.login = (req, res) => {
+export const login = (req, res) => {
   const { username, password } = req.body;
   const user = db.users.find(u => u.username === username);
   if (!user) return res.status(401).json({ message: 'Usuário não encontrado' });

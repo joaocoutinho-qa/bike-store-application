@@ -1,8 +1,10 @@
 // Banco de dados 
-module.exports = {
+const db = {
   users: [],
   clientes: [],
   produtos: [],
   servicos: [],
   financeiro: []
 };
+
+export default db;

@@ -1,14 +1,20 @@
-const express = require('express');
-const router = express.Router();
-const servicosController = require('../controllers/servicos.controller');
-const { authenticateToken } = require('../middleware/auth.middleware');
+import express from 'express';
+import {
+	listarServicos,
+	criarServico,
+	obterServico,
+	atualizarServico,
+	deletarServico
+} from '../controllers/servicos.controller.js';
+import { authenticateToken } from '../middleware/auth.middleware.js';
 
+const router = express.Router();
 router.use(authenticateToken);
 
-router.get('/', servicosController.listarServicos);
-router.post('/', servicosController.criarServico);
-router.get('/:id', servicosController.obterServico);
-router.put('/:id', servicosController.atualizarServico);
-router.delete('/:id', servicosController.deletarServico);
+router.get('/', listarServicos);
+router.post('/', criarServico);
+router.get('/:id', obterServico);
+router.put('/:id', atualizarServico);
+router.delete('/:id', deletarServico);
 
-module.exports = router;
+export default router;

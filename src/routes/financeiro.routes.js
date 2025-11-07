@@ -1,15 +1,21 @@
-const express = require('express');
-const router = express.Router();
-const financeiroController = require('../controllers/financeiro.controller');
-const { authenticateToken, authorizeRole } = require('../middleware/auth.middleware');
+import express from 'express';
+import {
+	listarLancamentos,
+	criarLancamento,
+	obterLancamento,
+	atualizarLancamento,
+	deletarLancamento
+} from '../controllers/financeiro.controller.js';
+import { authenticateToken, authorizeRole } from '../middleware/auth.middleware.js';
 
+const router = express.Router();
 router.use(authenticateToken);
 router.use(authorizeRole(['admin']));
 
-router.get('/', financeiroController.listarLancamentos);
-router.post('/', financeiroController.criarLancamento);
-router.get('/:id', financeiroController.obterLancamento);
-router.put('/:id', financeiroController.atualizarLancamento);
-router.delete('/:id', financeiroController.deletarLancamento);
+router.get('/', listarLancamentos);
+router.post('/', criarLancamento);
+router.get('/:id', obterLancamento);
+router.put('/:id', atualizarLancamento);
+router.delete('/:id', deletarLancamento);
 
-module.exports = router;
+export default router;

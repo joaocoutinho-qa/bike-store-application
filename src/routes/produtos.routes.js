@@ -1,14 +1,20 @@
-const express = require('express');
-const router = express.Router();
-const produtosController = require('../controllers/produtos.controller');
-const { authenticateToken } = require('../middleware/auth.middleware');
+import express from 'express';
+import {
+	listarProdutos,
+	criarProduto,
+	obterProduto,
+	atualizarProduto,
+	deletarProduto
+} from '../controllers/produtos.controller.js';
+import { authenticateToken } from '../middleware/auth.middleware.js';
 
+const router = express.Router();
 router.use(authenticateToken);
 
-router.get('/', produtosController.listarProdutos);
-router.post('/', produtosController.criarProduto);
-router.get('/:id', produtosController.obterProduto);
-router.put('/:id', produtosController.atualizarProduto);
-router.delete('/:id', produtosController.deletarProduto);
+router.get('/', listarProdutos);
+router.post('/', criarProduto);
+router.get('/:id', obterProduto);
+router.put('/:id', atualizarProduto);
+router.delete('/:id', deletarProduto);
 
-module.exports = router;
+export default router;

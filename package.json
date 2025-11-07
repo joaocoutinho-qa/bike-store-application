@@ -1,6 +1,7 @@
 {
   "name": "bike-store-application",
   "version": "1.0.0",
+  "type": "module",
   "description": "API REST para gestão de loja de produtos de bike.",
   "main": "src/server.js",
   "scripts": {
