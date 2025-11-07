@@ -13,7 +13,7 @@ const URL_DA_API = process.env.BASE_URL_REST
         token = respostaLogin.body.token
     })
 
-    describe('Filtrar clientes', () => {
+    describe('Filtrar cliente especifico', () => {
         it('Deve filtrar cliente específico por ID válido', async () => {
              const cadastrar_cliente = await request(URL_DA_API)
                 .post('/clientes')
