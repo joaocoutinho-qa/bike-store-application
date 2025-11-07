@@ -37,7 +37,7 @@ jobs:
         run: npm install chai@4
 
       - name: Executar os testes de api
-        run: npm test
+        run: npm run api
 
       - name: Executar os testes de performance 
         run: for file in tests/performance/**/*.js; do k6 run "$file"; done
