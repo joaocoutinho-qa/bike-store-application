@@ -8,7 +8,7 @@
   "api-server": "node src/server.js",
   "web-server": "node web/app.js",
   "test": "mocha --recursive tests",
-  "api": "mocha --recursive tests/api",
+  "api": "mocha --reporter mochawesome --reporter-options reportDir=mochawesome-report,reportFilename=api-report --recursive tests/api",
   "performance": "bash -c 'for file in tests/performance/**/*.js; do k6 run \"$file\"; done'"
   },
   "keywords": [
@@ -38,6 +38,7 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.0.3",
+    "mochawesome": "^7.1.3"
   }
 }
