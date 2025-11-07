@@ -4,11 +4,11 @@
   "description": "API REST para gestão de loja de produtos de bike.",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
-    "test": "mocha --recursive tests",
-    "web": "node web/app.js",
-    "web:dev": "nodemon web/app.js"
+  "api-server": "node src/server.js",
+  "web-server": "node web/app.js",
+  "test": "mocha --recursive tests",
+  "api": "mocha --recursive tests/api",
+  "performance": "bash -c 'for file in tests/performance/**/*.js; do k6 run \"$file\"; done'"
   },
   "keywords": [
     "api",

@@ -29,8 +29,8 @@ const URL_DA_API = process.env.BASE_URL_REST
                 .put(`/clientes/${id_retornado}`)
                 .set('Authorization', `Bearer ${token}`)
                 .send({
-                    nome: 'cliente 1 atualizado',
-                    email: 'cliente1atualizado@email.com',
+                    nome: 'cliente atualizado',
+                    email: 'cliente_atualizado@email.com',
                     telefone: '0987654321'
                 })
             expect(resposta.statusCode).to.equal(200)
