@@ -19,6 +19,10 @@ jobs:
         with:
           node-version: '18'
 
+
+      - name: Criar arquivo .env para testes
+        run: echo "BASE_URL_REST=http://localhost:3000/api" > .env
+
       - name: Instalação das dependências
         run: npm install
 
