@@ -1,5 +1,5 @@
 # Relatórios de performance gerados pelo k6
-*.html
+mochawesome-report/
 # Node modules
 node_modules/
 
