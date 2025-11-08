@@ -28,19 +28,25 @@ API REST para gestão de uma loja de bicicletas
 - `resources`: Documentação Swagger
 
 ## Como rodar
-1. Instale as dependências:
+1. Instalação das dependências:
    ```bash
    npm install
    ```
-2. Inicie o servidor:
+2. Iniciar o servidor:
    ```bash
-   npm start
+   npm api-server
+   npm web-server
    ```
-3. Acesse a documentação em [http://localhost:3000/docs](http://localhost:3000/docs)
+ 2. Executar os testes:
+   ```bash
+   npm run api
+   npm run performance
+   ```
+4. Acesse a documentação em [http://localhost:3000/docs](http://localhost:3000/docs)
 
 ## Usuários cadastrados previamente
-- Gerente: `gerente` / `123456`
-- Funcionário: `funcionario` / `123456`
+- Gerente: `joao.coutinho` / `123456`
+- Funcionário: `tiago.barbosa` / `123456`
 
 ## Observações
 - Banco de dados em memória (os dados são perdidos ao reiniciar).
