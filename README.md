@@ -1,53 +1,65 @@
 # Bike Store API
 
-API REST para gestão de uma loja de bicicletas
+REST API for managing a bicycle store
 
-## Funcionalidades
-- Gestão de clientes
-- Cadastro e gestão de produtos
-- Agendamento de revisões e serviços
-- Controle financeiro
+## Features
+- Customer management
+- Product registration and management
+- Scheduling of maintenance and services
+- Financial control
 
-## Autenticação
-- Login obrigatório para acesso às funcionalidades.
-- Gerente: acesso a todas as funcionalidades do sistema
-- Funcionário: acesso às funcionalidades de Gestão de Clientes e
-  Agendamento de revisões e serviços.
-- Autenticação via JWT (Bearer Token).
+## Authentication
+- Login required to access features.
 
-## Documentação
-- Documentação disponível em `/docs` (Swagger UI).
-- Arquivo Swagger em `resources/swagger.json`.
+- Manager: access to all system features
+- Employee: access to Customer Management and
 
-## Estrutura do Projeto
-- `src/routes`: Rotas da API
-- `src/controllers`: Lógica dos endpoints
-- `src/services`: Regras de negócio
-- `src/models`: Modelos e banco em memória
-- `src/middleware`: Middlewares de autenticação, autorização e erros
-- `resources`: Documentação Swagger
+Scheduling of maintenance and services features.
 
-## Como rodar
-1. Instalação das dependências:
-   ```bash
-   npm install
-   ```
-2. Iniciar o servidor:
-   ```bash
-   npm api-server
-   npm web-server
-   ```
- 2. Executar os testes:
-   ```bash
-   npm run api
-   npm run performance
-   ```
-4. Acesse a documentação em [http://localhost:3000/docs](http://localhost:3000/docs)
+- Authentication via JWT (Bearer Token).
 
-## Usuários cadastrados previamente
-- Gerente: `joao.coutinho` / `123456`
-- Funcionário: `tiago.barbosa` / `123456`
+## Documentation
+- Documentation available in `/docs` (Swagger UI).
 
-## Observações
-- Banco de dados em memória (os dados são perdidos ao reiniciar).
-- Para customizar usuários, edite `src/controllers/auth.controller.js`.
+- Swagger file in `resources/swagger.json`.
+
+## Project Structure
+- `src/routes`: API Routes
+- `src/controllers`: Endpoint Logic
+- `src/services`: Business Rules
+- `src/models`: Models and In-Memory Database
+- `src/middleware`: Authentication, Authorization, and Error Middleware
+- `resources`: Swagger Documentation
+
+## How to Run
+1. Install dependencies:
+
+``bash
+npm install
+
+``
+2. Start the server:
+
+``bash
+npm api-server
+npm web-server
+
+``
+
+3. Run the tests:
+
+``bash
+npm run api
+npm run performance
+
+```
+4. Access the documentation at [http://localhost:3000/docs](http://localhost:3000/docs)
+
+## Pre-registered Users
+- Manager: `joao.coutinho` / `123456`
+- Employee: `tiago.barbosa` / `123456`
+
+## Notes
+- In-memory database (data is lost upon restart).
+
+- To customize users, edit `src/controllers/auth.controller.js`.
